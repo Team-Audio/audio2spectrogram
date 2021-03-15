@@ -13,8 +13,6 @@ Options:
     -m --modules  Show installed modules.
 
 """
-import sys
-
 import numpy as np
 from docopt import docopt
 import audio_converters
