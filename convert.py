@@ -18,14 +18,16 @@ import sys
 import numpy as np
 from docopt import docopt
 import audio_converters
+from pathlib import Path
+import os
+
 
 # TODO (algorythmix):
 # [ ] make sure that the plot is 512x512
 # [ ] reshape the output format to rgb instead of rgba (4->3)
-# [ ] implement tree conversion
+# [X] implement tree conversion
 # [ ] (optional:Ilyas?) split samples that are longer than 512s into multiple spectrograms
 # [ ] (optional:?) allow data-feeding via stdin and output via stdout
-
 
 
 def main():
@@ -51,9 +53,12 @@ def cvt_file(input_path: str, output_path: str):
 
 
 def cvt_tree(input_dir: str, output_dir: str):
-    print("Not implemented yet, sorry!")
-    sys.exit(1)
-
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+    for filename in os.listdir(input_dir):
+        pre, _ = os.path.splitext(filename)
+        input_file = os.path.join(input_dir, filename)
+        output_file = os.path.join(output_dir, pre + ".npy")
+        cvt_file(input_file, output_file)
 
 if __name__ == "__main__":
     main()
