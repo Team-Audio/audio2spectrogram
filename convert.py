@@ -95,6 +95,9 @@ def cvt_file(input_path: str, output_path: str) -> None:
             # save numpy array to disk in binary format
             np.save(output_path, array)
 
+            # stop looking for other converters
+            return
+
 
 def cvt_tree(input_dir: str, output_dir: str) -> None:
     """Convert an entire folder from audio to numpy arrays.

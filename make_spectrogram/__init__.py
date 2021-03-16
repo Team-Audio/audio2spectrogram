@@ -35,7 +35,10 @@ def create(rate, samples) -> np.array:
     vprint3("[make_spectrogram.create] Drawing spectrogram to canvas")
 
     # draw the spectrogram to the canvas, it is put on a dB scale
-    ax.pcolormesh(times, frequencies, 10 * np.log10(spectrogram), shading='auto')
+    # np.log10 might give a warning if the values are 0 so we simply ignore that
+    # it might be better to slightly scale them however
+    with np.errstate(divide='ignore'):
+        ax.pcolormesh(times, frequencies, 10 * np.log10(spectrogram), shading='auto')
 
     # refresh the canvas
     canvas.draw()
