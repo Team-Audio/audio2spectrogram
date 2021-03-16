@@ -15,4 +15,14 @@ class WavConverter(audio_converters.base.Converter):
     def convert(self, path: str) -> np.array:
         vprint1("[WavConverter.convert] Hello!")
         rate, samples = read(path)
+
+        try:
+            if samples.shape[1] == 2:
+                samples = np.delete(samples, 1, 1).flatten()
+
+        # ignore invalid access here, that just
+        # means the data was already good
+        except IndexError:
+            pass
+
         return make_spectrogram.create(rate=rate, samples=samples)

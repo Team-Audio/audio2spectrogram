@@ -12,8 +12,8 @@
 ### Usage
 ```
 Usage:
-    convert.py dir <input_directory> <output_directory>
-    convert.py file <input_file> <output_file>
+    convert.py dir <input_directory> <output_directory> [ -v | -vv | -vvv ]
+    convert.py file <input_file> <output_file> [ -v | -vv | -vvv ]
     convert.py ( -h | --help)
     convert.py --version
     convert.py ( -m | --modules)
@@ -21,5 +21,7 @@ Usage:
 Options:
     -h --help     Show this screen.
     --version     Show version.
+    -m --modules  Show installed modules.
+    -v            Increase output verbosity
     -m --modules  Show installed modules.
 ```
