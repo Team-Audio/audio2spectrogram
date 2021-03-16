@@ -5,10 +5,8 @@
 </p>
 
 ### TODO-List:
-- [ ] make sure that the plot is 512x512
-- [ ] reshape the output format to rgb instead of rgba (4->3)
+- [X] reshape the output format to rgb instead of rgba (4->3)
 - [X] implement tree conversion
-- [ ] (optional:Ilyas?) split samples that are longer than 512s into multiple spectrograms
 - [ ] (optional:?) allow data-feeding via stdin and output via stdout
 
 ### Usage
