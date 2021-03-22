@@ -12,16 +12,16 @@
 ### Usage
 ```
 Usage:
-    convert.py dir <input_directory> <output_directory> [ -v | -vv | -vvv ]
-    convert.py file <input_file> <output_file> [ -v | -vv | -vvv ]
+    convert.py dir <input_directory> ( <output_directory> | -s )  [ -v | -vv | -vvv ] [-g]
+    convert.py file <input_file> ( <output_file> | -s ) [ -v | -vv | -vvv ]
     convert.py ( -h | --help)
     convert.py --version
     convert.py ( -m | --modules)
-
 Options:
     -h --help     Show this screen.
     --version     Show version.
     -m --modules  Show installed modules.
     -v            Increase output verbosity
-    -m --modules  Show installed modules.
+    -s            Use stdout and stdin
+    -g            glue the output together and create one glued.npy
 ```
