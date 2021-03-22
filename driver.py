@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 
 import audio_converters
-from verbose_print import *
+from verbose_print import vprint1, vprint2, vprint3
 
 
 class Converter:
@@ -140,7 +140,6 @@ class Converter:
 
         # check if there is something over to save to disk
         if len(self.glued) > 0:
-
             # save the glued together arrays to disk
             out = os.path.join(output_dir, "glued.npy")
             np.save(out, np.array(self.glued))

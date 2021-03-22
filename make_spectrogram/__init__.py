@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from scipy import signal
-from verbose_print import *
+from verbose_print import vprint2, vprint3
 
 
 def create(rate, samples) -> np.array:

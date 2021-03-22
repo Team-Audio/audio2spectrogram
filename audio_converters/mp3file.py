@@ -4,7 +4,7 @@ from pydub import AudioSegment
 import numpy as np
 
 import make_spectrogram
-from verbose_print import *
+from verbose_print import vprint1,vprint2
 
 
 class Mp3Converter(audio_converters.base.Converter):
