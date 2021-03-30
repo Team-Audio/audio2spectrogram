@@ -1,8 +1,10 @@
 import os
 import sys
 from pathlib import Path
+import re
 
 import numpy as np
+import tqdm as tqdm
 
 import audio_converters
 from verbose_print import vprint1, vprint2, vprint3
@@ -19,13 +21,20 @@ class Converter:
         self.args = args
         self.use_stdout = args["-s"] or False
         self.use_glue = args["-g"] or False
+        self.use_glue_for_labels = args["-l"] or False
         self.dir_mode = args["dir"] or False
         self.file_mode = args["file"] or False
         self.module_mode = args["--modules"] or False
 
         self.input = args["<input_directory>"] or args["<input_file>"]
         self.output = args["<output_directory>"] or args["<output_file>"]
+
+        self.filter = args["-f"] or None
+        if self.filter is not None:
+            self.filter = re.compile(str(self.filter).lstrip('='))
+
         self.glued = []
+        self.labels = []
 
     def run(self):
         vprint2(f"[startup] {self.input} -> {self.output}")
@@ -85,6 +94,7 @@ class Converter:
                 # check if we should glue all the individual files into one
                 if self.use_glue:
                     self.glued += [array]
+                    self.labels += [input_path + ".label.npy"]
                     return
 
                 # save numpy array to disk in binary format
@@ -123,26 +133,39 @@ class Converter:
         self.glued = []
 
         # iterate over all files in the input directory
-        for filename in os.listdir(input_dir):
+        for filename in tqdm.tqdm(os.listdir(input_dir),desc="Walking files"):
             vprint3(f"[cvt_tree] processing {filename} in {input_dir}")
 
-            # get the "filename without extension" from filename
-            pre, _ = os.path.splitext(filename)
+            if self.filter is None or self.filter.match(filename) is not None:
+                # get the "filename without extension" from filename
+                pre, _ = os.path.splitext(filename)
 
-            # put input_dir and filename together
-            input_file = os.path.join(input_dir, filename)
+                # put input_dir and filename together
+                input_file = os.path.join(input_dir, filename)
 
-            # put output_dir and "filename with new extension together"
-            output_file = os.path.join(output_dir, pre + ".npy")
+                # put output_dir and "filename with new extension together"
+                output_file = os.path.join(output_dir, pre + ".npy")
 
-            vprint3(f"[cvt_tree] converting {input_file} to {output_file}")
-            self.cvt_file(input_file, output_file)
+                vprint3(f"[cvt_tree] converting {input_file} to {output_file}")
+                self.cvt_file(input_file, output_file)
+            else:
+                vprint3(f"[cvt_tree] file {filename} was skipped since it did not match {self.filter}")
 
         # check if there is something over to save to disk
         if len(self.glued) > 0:
             # save the glued together arrays to disk
             out = os.path.join(output_dir, "glued.npy")
+
             np.save(out, np.array(self.glued))
+
+            # also glue labels if required
+            labels = []
+
+            if self.use_glue_for_labels:
+                for x in self.labels:
+                    labels += [np.load(x)]
+                out = os.path.join(output_dir, "labels.npy")
+                np.save(out, np.array(labels))
 
             # clear array
             self.glued = []

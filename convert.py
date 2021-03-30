@@ -1,6 +1,6 @@
 """ Audio To Spectrogram Convert.
 Usage:
-    convert.py dir <input_directory> ( <output_directory> | -s )  [ -v | -vv | -vvv ] [-g]
+    convert.py dir <input_directory> ( <output_directory> | -s )  [ -v | -vv | -vvv ] [-g [-l]] [-f=RGX]
     convert.py file <input_file> ( <output_file> | -s ) [ -v | -vv | -vvv ]
     convert.py ( -h | --help)
     convert.py --version
@@ -13,6 +13,8 @@ Options:
     -v            Increase output verbosity
     -s            Use stdout and stdin
     -g            glue the output together and create one glued.npy
+    -f RGX        regex filter that the file needs to match against
+    -l            when gluing together files also glue the labels
 """
 
 from docopt import docopt
